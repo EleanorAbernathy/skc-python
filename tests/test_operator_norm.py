@@ -1,8 +1,8 @@
 # Test file to print out distances between some standard gates
 
-#from skc_unitary_decompose import *
-from skc_operator import *
-from skc_utils import *
+#from skc.unitary_decompose import *
+from skc.operator import *
+from skc.utils import *
 import scipy.linalg
 
 gates = [I2, SX, SY, SZ, H, T]

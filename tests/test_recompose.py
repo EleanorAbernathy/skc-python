@@ -6,7 +6,7 @@ from skc.utils import *
 import unittest
 
 # Maximum dimension (2**D) to test
-D = 4
+D = 2
 
 ##############################################################################
 # Test for recovering a sign change in the hermitian from a single

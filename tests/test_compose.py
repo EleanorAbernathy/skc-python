@@ -10,7 +10,7 @@ import random
 import unittest
 
 # Maximum dimension (2**D) to test
-D = 4
+D = 2
 
 ##############################################################################
 def test_pauli_unitary():

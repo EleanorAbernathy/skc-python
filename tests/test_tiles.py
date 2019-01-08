@@ -1,9 +1,9 @@
-from skc_tile import *
+from skc.tile import *
 import math
 
-from skc_basic_approx import *
-from skc_operator import *
-from skc_utils import *
+from skc.basic_approx import *
+from skc.operator import *
+from skc.utils import *
 import numpy
 #import cPickle
 import time

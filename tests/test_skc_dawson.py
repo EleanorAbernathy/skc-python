@@ -1,9 +1,9 @@
-from skc_operator import *
-from skc_dawson import *
-from skc_utils import *
-from skc_compose import *
-from skc_basis import *
-from skc_group_factor import *
+from skc.operator import *
+from skc.dawson import *
+from skc.utils import *
+from skc.compose import *
+from skc.basis import *
+from skc.group_factor import *
 import math
 
 d = 4
@@ -21,7 +21,7 @@ print "U= " + str(matrix_U)
 load_basic_approxes("basic_approxes_su4.pickle")
 set_basis(basis)
 
-set_factor_method(aram_diagonal_factor)
+sk_set_factor_method(aram_diagonal_factor)
 
 Uop = Operator(name="U", matrix=matrix_U)
 

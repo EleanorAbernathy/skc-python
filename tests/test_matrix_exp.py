@@ -1,9 +1,9 @@
 # Testing our own matrix exponentiate, since numpy's doesn't seem to work
 
-from skc_utils import *
-from skc_operator import *
-from skc_diagonalize import *
-from skc_basis import *
+from skc.utils import *
+from skc.operator import *
+from skc.diagonalize import *
+from skc.basis import *
 
 import numpy
 

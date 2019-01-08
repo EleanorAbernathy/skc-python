@@ -1,9 +1,9 @@
-from skc_dawson_factor import *
-from skc_decompose import *
-from skc_operator import *
-from skc_utils import *
-from skc_basis import *
-from skc_group_factor import *
+from skc.dawson.factor import *
+from skc.decompose import *
+from skc.operator import *
+from skc.utils import *
+from skc.basis import *
+from skc.group_factor import *
 
 import math
 

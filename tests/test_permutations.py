@@ -1,10 +1,10 @@
 import scipy
-
+import math
 # The combinatorics function n choose k
 def n_choose_k(n, k):
-	n_fact = scipy.factorial(n)
-	k_fact = scipy.factorial(k)
-	n_minus_k_fact = scipy.factorial(n-k)
+	n_fact = math.factorial(n)
+	k_fact = math.factorial(k)
+	n_minus_k_fact = math.factorial(n-k)
 	return n_fact / (k_fact * n_minus_k_fact)
 
 def swap(array, i, j):

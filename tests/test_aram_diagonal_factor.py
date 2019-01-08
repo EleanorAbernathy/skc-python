@@ -1,8 +1,8 @@
-from skc_diagonalize import *
-from skc_basis import *
-from skc_compose import *
-from skc_dawson_factor import *
-from skc_group_factor import *
+from skc.diagonalize import *
+from skc.basis import *
+from skc.compose import *
+from skc.dawson.factor import *
+from skc.group_factor import *
 
 import numpy
 
@@ -17,7 +17,7 @@ axis = pick_random_axis(H4)
 (matrix_U, components, angle) = get_random_unitary(basis)
 print "matrix_U= " + str(matrix_U)
 
-(matrix_V, matrix_W) = aram_diagonal_factor(matrix_U, H4)
+(matrix_V, matrix_W) = aram_diagonal_factor(matrix_U, H4, axis)
 
 matrix_U2 = get_group_commutator(matrix_V, matrix_W)
 
