@@ -197,6 +197,23 @@ class IdentityRule(SimplifyRule):
 
 		return (activated, C)
 
+#######################################
+class DoubleAdjointRule(SimplifyRule):
+	def __init__(self):
+		SimplifyRule.__init__(self, "Qdd = Q", 1)
+
+	def __simplify__(self, arg_list):
+		activated = False
+		A = arg_list[0]
+		C = A
+
+		if len(A) >= 3 and 'dd' == A[1:3]:
+			activated = True
+			C = A[0] + A[3:]
+
+		return (activated, C)
+
+
 ##############################################################################
 class GeneralRule(SimplifyRule):
 	def __init__(self, sequence, new_sym = 'I'):

@@ -95,7 +95,13 @@ class TestSimplifyEngine(unittest.TestCase):
 		sequence = ['X', 'Ydd']
 		(simplify_length, new_sequence) = self.engine.simplify(sequence)
 		self.assertEqual(new_sequence, ['X', 'Y'])
-		self.assertEqual(simplify_length, 0)		
+		self.assertEqual(simplify_length, 0)
+
+	def test_double_adjoint_2(self):
+		sequence = ['X', 'Ydd', 'Yd']
+		(simplify_length, new_sequence) = self.engine.simplify(sequence)
+		self.assertEqual(new_sequence, ['X'])
+		self.assertEqual(simplify_length, 2)		
 
 ##############################################################################
 class TestDoubleIdentityRule(unittest.TestCase):
@@ -209,7 +215,7 @@ class TestAdjointRule(unittest.TestCase):
 		self.assertEqual(sequence, ['X', 'Zd'])
 
 	def test_equal_length(self):
-		# This should not simplify
+		# This should not simplify #Why?
 		sequence = ['Ydd', 'Xdd']
 		(obtains, sequence) = self.rule.simplify(sequence)
 		self.assertEqual(obtains, False)
@@ -221,7 +227,29 @@ class TestAdjointRule(unittest.TestCase):
 		(obtains, sequence) = self.rule.simplify(sequence)
 		self.assertEqual(obtains, True)
 		self.assertEqual(sequence, ['I'])
-		
+
+
+class TestDoubleAdjointRule(unittest.TestCase):
+
+	def setUp(self):
+		self.rule = DoubleAdjointRule()
+
+	# Test that double adjoint rule obtains for simplest case
+	def test_simplest(self):
+		# This should simplify to I
+		sequence = ['Qdd']
+		(obtains, sequence) = self.rule.simplify(sequence)
+		self.assertEqual(obtains, True)
+		self.assertEqual(sequence, ['Q'])
+
+	def test_repeated_d(self):
+		sequence = ['Qddd']
+		# This should simplify to I
+		(obtains, sequence) = self.rule.simplify(sequence)
+		self.assertEqual(obtains, True)
+		self.assertEqual(sequence, ['Qd'])
+
+
 ##############################################################################		
 def get_suite():
 	suite = unittest.TestSuite()
@@ -236,6 +264,8 @@ def get_suite():
 	suite.addTest(suite4)
 	suite5 = loader.loadTestsFromTestCase(TestSimplifyEngine)
 	suite.addTest(suite5)
+	suite6 = loader.loadTestsFromTestCase(TestDoubleAdjointRule)
+	suite.addTest(suite6)
 	return suite
 
 ##############################################################################
