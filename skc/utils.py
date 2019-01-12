@@ -200,16 +200,16 @@ def matrix_exp_diag(matrix):
 def matrix_exp(matrix, steps):
 	d = matrix.shape[0]
 	identity = matrixify(numpy.eye(d))
-	sum = identity
+	summ = identity
 	product = identity
 	denom = 1
 	for i in range(steps):
 		product = product * matrix
 		denom = denom * (i+1)
 		#print "prod/denom= " + str(product / denom)
-		sum = sum + (product / denom)
-		#print "sum= " + str(product / denom)
-	return sum
+		summ = summ + (product / denom)
+		#print "summ= " + str(product / denom)
+	return summ
 	
 ##############################################################################
 def n_from_eps(eps, eps_0, c_approx):

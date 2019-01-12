@@ -27,7 +27,7 @@ def get_basis_components(matrix_H, basis):
 	# we return below, b/c it will be interpreted as (two times) an angle
 	norm = scipy.linalg.norm(component_dict.values())
 	#print "norm= " + str(norm)
-	
+	#print "comp dict=%s"%component_dict
 	sign_plus = 0
 	sign_minus = 0
 

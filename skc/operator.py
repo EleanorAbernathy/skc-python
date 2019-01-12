@@ -27,7 +27,7 @@ class Operator:
 		return hash
 			
 	def print_matrix(self):
-			print "  Matrix: " + str(self.matrix)
+		print "  Matrix: " + str(self.matrix)
 			
 	def add_ancestors(self, other, new_name=""):
 		# Append new ancestors to the end of self
@@ -52,10 +52,9 @@ class Operator:
 		dist = trace_distance(self.matrix, identity.matrix)
 		close_to_identity = approx_equals(dist, 0)
 		named_identity = (self.name == identity.name)
-		return close_to_identity and (not named_identity)
 		# Uncomment the following two lines if you want to catch identities
-		#assert_matrices_approx_not_equal(self.matrix, identity.matrix, \
-		#	message=msg)
+		#assert_matrices_approx_not_equal(self.matrix, identity.matrix, message=msg)
+		return close_to_identity and (not named_identity)
 
 	def multiply(self, other, new_name=""):
 		new_matrix = self.matrix * other.matrix

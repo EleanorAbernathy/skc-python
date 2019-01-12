@@ -26,5 +26,5 @@ op = search_kdtree(tree, search_U, basis)
 
 print "op= " + str(op)
 #print "op.dims= " + str(op.dimensions)
-print "fowler_dist(op,U)= " + str(fowler_distance(op.matrix, search_U))
 print "trace_dist(op,U)= " + str(trace_distance(op.matrix, search_U))
+print "fowler_dist(op,U)= " + str(fowler_distance(op.matrix, search_U))

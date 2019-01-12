@@ -28,21 +28,19 @@ for (k,v) in H2.items_minus_identity():
 
 ##############################################################################
 # Simplifying rules
-identity_rule = IdentityRule(H2.identity.name)
-
 double_rules = []
 
 for gate in gset:
 	new_double_rule = DoubleIdentityRule(symbol=gate.name, id_sym=H2.identity.name)
 	double_rules.append(new_double_rule)
-		
-adjoint_rule = AdjointRule(id_sym=H2.identity.name)
+
 
 simplify_rules = [
-	identity_rule,
-	adjoint_rule
+	IdentityRule(H2.identity.name),
+	AdjointRule(id_sym=H2.identity.name),
+	DoubleAdjointRule()
 	]
-#simplify_rules.extend(double_rules)
+simplify_rules.extend(double_rules)
 
 ##############################################################################
 # Prepare settings

@@ -41,12 +41,12 @@ def sk_set_factor_method(factor_method):
 	print "the_factor_method= " + str(the_factor_method.__name__)
 
 ##############################################################################
-def solovay_kitaev(U, n, id="U", ancestry=""):
+def solovay_kitaev(U, n, ide="U", ancestry=""):
 	print "*******************************************************************"
-	print str(id)+"_"+str(n)
+	print str(ide)+"_"+str(n)
 	print ancestry
 	print "-------------------------------------------------------------------"
-	
+
 	if (n == 0):
 		basic_approx = sk_search_tree(U)
 		# discard min_dist for now. but just you wait...
@@ -54,20 +54,20 @@ def solovay_kitaev(U, n, id="U", ancestry=""):
 		return basic_approx
 	else:
 		print "Beginning level " + str(n)
-		U_n1 = solovay_kitaev(U, n-1, 'U', ancestry+id) # U_{n-1}
-		print "U_"+str(n-1)+": " + str(U_n1)
+		U_n1 = solovay_kitaev(U, n-1, 'U', ancestry+ide) # U_{n-1}
+		#print "U_"+str(n-1)+": " + str(U_n1)
 		U_n1_dagger = U_n1.dagger()
 		U_U_n1_dagger = U.multiply(U_n1_dagger).matrix
 		V_matrix,W_matrix = the_factor_method(U_U_n1_dagger, the_basis, the_axis)
-		print "V: " + str(V_matrix)
-		print "W: " + str(W_matrix)
+		#print "V: " + str(V_matrix)
+		#print "W: " + str(W_matrix)
 		V = Operator(name="V", matrix=V_matrix)
 		W = Operator(name="W", matrix=W_matrix)
-		V_n1 = solovay_kitaev(V, n-1, 'V', ancestry+id) # V_{n-1}
-		print "V_"+str(n-1)+": " + str(V_n1)
+		V_n1 = solovay_kitaev(V, n-1, 'V', ancestry+ide) # V_{n-1}
+		#print "V_"+str(n-1)+": " + str(V_n1)
 		V_n1_dagger = V_n1.dagger()
-		W_n1 = solovay_kitaev(W, n-1, 'W', ancestry+id) # W_{n-1}
-		print "W_"+str(n-1)+": " + str(W_n1)
+		W_n1 = solovay_kitaev(W, n-1, 'W', ancestry+ide) # W_{n-1}
+		#print "W_"+str(n-1)+": " + str(W_n1)
 		W_n1_dagger = W_n1.dagger()
 		V_n1_dagger_W_n1_dagger = V_n1_dagger.multiply(W_n1_dagger)
 		V_n1_W_n1 = V_n1.multiply(W_n1)

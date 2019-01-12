@@ -6,7 +6,7 @@ from skc.basis import *
 from skc.group_factor import *
 import math
 
-d = 4
+d = 2
 basis = get_hermitian_basis(d=d)
 theta = math.pi / 4 # 45 degrees
 
@@ -18,16 +18,17 @@ angle_U = math.pi / 12
 
 print "U= " + str(matrix_U)
 
-load_basic_approxes("basic_approxes_su4.pickle")
-set_basis(basis)
-
-sk_set_factor_method(aram_diagonal_factor)
+#load_basic_approxes("basic_approxes_su4.pickle")
+sk_set_basis(basis)
+random_axis = pick_random_axis(basis)
+sk_set_axis(random_axis)
+sk_set_factor_method(dawson_group_factor)
 
 Uop = Operator(name="U", matrix=matrix_U)
 
-Un = solovay_kitaev(Uop, 2, 'U', '')
+sk_build_tree("su2", 16)
+Un = solovay_kitaev(Uop, 3, 'U', '')
 print "Approximated U: " + str(Un)
 
 print "Un= " + str(Un.matrix)
-
-print "dist(U,Un)= " + str(distance(Un.matrix, Uop.matrix))
+print "dist(U,Un)= " + str(fowler_distance(Un.matrix, Uop.matrix))
