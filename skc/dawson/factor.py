@@ -167,8 +167,8 @@ def dawson_x_group_factor_su2(matrix_U, basis):
 	az = ct; # z components
 	bz = -az; # a and b have opposite z components
 	
-	components_a = cart3d_to_h2(x=ax, y=ay, z=az)
-	components_b = cart3d_to_h2(x=bx, y=by, z=bz)
+	components_A = cart3d_to_h2(x=ax, y=ay, z=az)
+	components_B = cart3d_to_h2(x=bx, y=by, z=bz)
 	#print "vector_a= " + str(components_a)
 	#print "vector_b= " + str(components_b)
 	
@@ -177,7 +177,9 @@ def dawson_x_group_factor_su2(matrix_U, basis):
 	
 	# Find similarity between A and B^\dagger
 	matrix_C = find_similarity_matrix(components_A, components_B,
-		angle_A, -angle_B, basis)
+		#this must be a mistake......
+		#angle_A, -angle_B, 
+		basis)
 
 	return [matrix_B, matrix_C]
 

@@ -45,12 +45,17 @@ def read_from_file(filename):
 
 ##############################################################################
 def dump_to_file(object, custom_filename=""):
+	global filename_prefix
+	global filename_suffix
 	if (len(custom_filename) > 0):
 		custom_filename = "-" + custom_filename
 	filename = filename_prefix + "-" + filename_suffix + custom_filename + ".pickle"
 	
 	print "Begin writing file: " + filename
-	f = open(filename, 'wb')
+	try:
+		f = open(filename, 'wb')
+	except Exception:
+		f = open(custom_filename + "-lala.pickle")
 	
 	begin_time = time.time()
 	

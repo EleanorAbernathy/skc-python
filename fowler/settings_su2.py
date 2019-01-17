@@ -44,8 +44,10 @@ simplify_rules.extend(double_rules)
 
 ##############################################################################
 # Prepare settings
-set_filename_prefix("pickles/fowler_su2/gen")
 
+set_filename_prefix("pickles/su2/gen")
+
+print filename_prefix
 settings = BasicApproxSettings()
 settings.set_iset(gset)
 settings.init_simplify_engine(simplify_rules)

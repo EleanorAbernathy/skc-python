@@ -21,10 +21,10 @@ class Operator:
 			"  Ancestors: " + str(self.ancestors)
 			
 	def __hash__(self):
-		hash = self.name.__hash__()
+		h = self.name.__hash__()
 		for ancestor in self.ancestors:
-			hash *= ancestor.__hash__()
-		return hash
+			h *= ancestor.__hash__()
+		return h
 			
 	def print_matrix(self):
 		print "  Matrix: " + str(self.matrix)
@@ -79,6 +79,31 @@ class Operator:
 		
 	def __eq__(self, other):
 		return (self.name == other.name) and (self.ancestors == other.ancestors)
+
+class OperatorTolerance(Operator):
+	def __init__(self, name, matrix, ancestors=[], tolerance=TOLERANCE10, distance=fowler_distance):
+		Operator.__init__(self, name, matrix, ancestors)
+		self.tol = tolerance
+		self.distance = distance
+		self.dist_id = self.distance(self.matrix, I2.matrix)
+	def __eq__(self, other):
+		#d = abs(self.dist_id - other.dist_id)
+		#return d < self.tol
+		d = self.distance(self.matrix, other.matrix) 
+		return d < self.tol
+	def __ne__(self, other):
+		return not self.__eq__(other)
+
+	#def __hash__(self):
+	#	#import pdb
+	#	#pdb.set_trace()
+	#	dist = self.dist_id
+	#	decimals = int(abs(round(math.log(self.tol, 10))))
+	#	dist = round(dist, decimals)
+	#	return str(dist).__hash__()
+
+
+	
 
 def get_identity(d):
 	return Operator("I", matrixify(numpy.eye(d)))

@@ -1,8 +1,10 @@
 from skc.basic_approx.file import *
 from skc.utils import *
+from skc.operator import OperatorTolerance
 
 # Read in enumerated, potential group members, and check for uniqueness
 def read_and_simplify(l_0):
+	import pdb
 	sequences = []
 	# Start numbering gates from 1, since identity is 0
 	i = 1
@@ -20,31 +22,28 @@ def read_and_simplify(l_0):
 			
 			print "Generation " + str(generation_num) + ":"
 			print str(len(new_sequences)) + " read"
-			
-			unique_sequences = []
+			#translate to a set
 	
-			for new_op in new_sequences:
-				print str(new_op)
-				found = False
-				for op in sequences:
-					dist = fowler_distance(new_op.matrix, op.matrix)
-					if (dist < TOLERANCE10):
-						print "Non-unique sequence found: " + str(new_op) + " *** " + str(op)
-						found = True
-						break # This is the important part!
-					#else:
-					#	print "dist("+str(new_op)+","+str(op)+")=" + str(dist)
-				
-				# Update the sequences for the next iteration
-				if (not found):
-					new_op.name = "G" + str(i)
-					i += 1
-					sequences.append(new_op)
+			for newop in new_sequences:
+				new_op = OperatorTolerance(newop.name, newop.matrix, newop.ancestors)
+				new_op.name = "G" + str(i)
+				i += 1
+				sequences.append(new_op)
 
 			print str(len(sequences))
 	
-	for sequence in sequences:
-		print str(sequence)
-	
-	# Write out the final group to a file
+	# Takes too much time so comment to just write all with duplicates
 	dump_to_file(sequences, "final-group-"+str(l_0))
+	#final_sequences = []
+	#l = len(sequences)
+	#for ii in range(len(sequences)):
+	#	op = sequences[ii]
+	#	for f in final_sequences:
+	#		if f == op:
+	#			break
+	#	else:
+	#		final_sequences.append(op)
+	#	print "processed %d/%d"%(ii,l)
+	#
+	## Write out the final group to a file
+	#dump_to_file(final_sequences, "final-group-"+str(l_0))
