@@ -1,9 +1,9 @@
-from skc.operator import *
-from skc.dawson import *
-from skc.utils import *
-from skc.compose import *
-from skc.basis import *
-from skc.group_factor import *
+from skc.operator import Operator
+from skc.dawson import sk_set_basis, sk_set_axis, sk_build_tree, sk_set_factor_method, solovay_kitaev
+from skc.utils import fowler_distance
+from skc.compose import get_random_unitary
+from skc.basis import pick_random_axis
+from skc.group_factor import dawson_group_factor
 import math
 
 d = 2

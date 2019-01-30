@@ -3,10 +3,10 @@ from skc.basis import *
 from skc.compose import *
 from skc.dawson.factor import *
 from skc.group_factor import *
-
+from skc.utils import *
 import numpy
 
-d=4
+d=2
 H4 = get_hermitian_basis(d=d)
 H2 = get_hermitian_basis(d=2)
 X_AXIS = cart3d_to_h2(x=1, y=0, z=0)
@@ -22,3 +22,5 @@ print "matrix_U= " + str(matrix_U)
 matrix_U2 = get_group_commutator(matrix_V, matrix_W)
 
 print "matrix_U2= " + str(matrix_U2)
+print trace_distance(matrix_U, matrix_U2)
+print fowler_distance(matrix_U, matrix_U2)
