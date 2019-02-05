@@ -1,13 +1,17 @@
 import verboselogs as vl
 import logging as lg
 import getopt, sys
+from os.path import join, abspath, dirname
 from skc.basis import cart3d_to_h2, get_hermitian_basis
+
 X_AXIS = cart3d_to_h2(x=1, y=0, z=0)
 H2 = get_hermitian_basis(d=2)
+PICKLES_PATH = join(dirname(abspath(__file__)), "../pickles/su2/")
 
-#no se si esto tiene que ir aqui
+
+
+
 def get_module_logger(
-    #vervosity=lg.WARNING, #or better a number?
     verbosity=lg.SPAM,
     file=None, # if no file, stdout
     msg_format="%(asctime)s [%(levelname)-5.5s]  %(message)s"
