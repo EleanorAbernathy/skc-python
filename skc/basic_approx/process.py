@@ -31,7 +31,7 @@ def build_kdtree(filename_prefix, filecount_upper, filename_suffix):
 	for operator in sequences:
 		#print "op= " + str(operator)
 		#print "matrix= " + str(operator.matrix)
-		#operator.dimensions = unitary_to_kdpoint(operator.matrix)
+		operator.dimensions = unitary_to_kdpoint(operator.matrix)
 		#print "dimensions= " + str(operator.dimensions)
 		# Now dimensions is in R^{d^2}
 		data.append(operator)
