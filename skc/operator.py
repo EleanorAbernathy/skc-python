@@ -6,21 +6,17 @@ import math;
 import scipy.linalg;
 
 from skc.utils import *
-from skc.basic_approx.process import unitary_to_kdpoint, components_to_kdpoint
-from skc.decompose import unitary_to_axis
-
 
 
 class Operator:
 
     def __init__(self, name, matrix, ancestors=[]):
-        from skc.basis import get_hermitian_basis
         self.name = name
         self.matrix = matrix
         if (len(ancestors) == 0):
             ancestors = [name]
         self.ancestors = ancestors
-        self.dimensions = self._get_dimensions(matrix, get_hermitian_basis(len(matrix)))
+
 
     def __str__(self):
         return "Operator: " + str(self.name) + "\n" \
@@ -83,17 +79,6 @@ class Operator:
         new_ancestors = self.ancestors + [scalar]
         return Operator(new_name, new_matrix, new_ancestors)
     
-    def _get_dimensions(self, matrix, basis):
-
-        (components, K, matrix_H) = unitary_to_axis(search_U, basis)
-        # Re-center angles from 0 to 2pi, instead of -pi to pi
-        if (K < 0):
-            for (k,v) in components.items():
-                components[k] = v * -1
-            K *= -1
-        
-        dimensions = components_to_kdpoint(components, basis, K)
-        return dimensions
 
     def __eq__(self, other):
         return (self.name == other.name) and (self.ancestors == other.ancestors)

@@ -2,9 +2,10 @@ import random
 from os.path import join, abspath, dirname, isfile
 import os, cPickle
 
-from skc.my_research import PICKLES_PATH, MODULE_LOGGER
+from skc.my_research import PICKLES_PATH, MODULE_LOGGER, H2
 from skc.operator import Operator
 from skc.kdtree import KDTree
+from skc import utils
 
 class SU2Reader():
 
@@ -16,6 +17,7 @@ class SU2Reader():
     def read_and_create(self, max_len=16, file_base_name='gen-g%d-1.pickle'):
         matrix_number = 1
         # Start numbering gates from 1, since identity is 0
+
         for seq_len in range(1, max_len+1):
             filename = join(self._path, file_base_name%seq_len)
             if not os.path.isfile(filename):
@@ -32,8 +34,6 @@ class SU2Reader():
                 matrix_number += 1
                 self._group.append(new_op)
 
-        data = list(self._group)
-        self._kdtree = KDTree.construct_from_data(data)
         self._dump_to_file(self._group, str(len(self._group)))
         return self._group
 
@@ -44,13 +44,19 @@ class SU2Reader():
         return random.sample(self._group, n_items)
 
     def get_smoother_subgroup(self,percentage=None, n_items=None ):
-        n_items = self._get_subgroup_checks(percentage, n_items
-            )
+        n_items = self._get_subgroup_checks(percentage, n_items)
         final_group = []
         glen = 0
-        if not self._kdtree:
-            MODULE_LOGGER.warning("KD tree not inizialised, reading group")
+        if not self._group:
+            MODULE_LOGGER.warning("group not inizialised, reading")
             self.read_and_create()
+        if not self._kdtree:
+            MODULE_LOGGER.info("KD tree not inizialised, creating")
+            data = []
+            for o in self._group:
+                utils.set_operator_dimensions(o, H2)
+                data.append(o)
+            self._kdtree = KDTree.construct_from_data(data)
 
         #determine nn_range to look in
         #50% => split into len/2 groups ==> 2 nn?
@@ -68,6 +74,18 @@ class SU2Reader():
                 break
 
         return final_group
+
+    def get_filtered_subgroup(self,percentage=None, n_items=None):
+        n_items = self._get_subgroup_checks(percentage, n_items)
+        data = []
+        tolerance = 1e-9
+        for op in self._group:
+            for filtered_op in data:
+                if utils.fowler_distance(filtered_op.matrix, op.matrix) < tolerance:
+                    break
+            else:
+                data.append(op)
+        return data
 
 
     def _get_subgroup_checks(self, percentage, n_items):
