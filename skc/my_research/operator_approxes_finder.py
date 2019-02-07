@@ -71,7 +71,7 @@ class BasicApproxesFinder(OperatorApproxesFinder):
         if self._basic_approxes:
             MODULE_LOGGER.info("Basic aproxes already loaded")
             return
-        with open(join(dirname(abspath(__file__)),'../../pickles/su2/--final-group-4.pickle'), 'rb') as f:
+        with open(join(dirname(abspath(__file__)),'../../pickles/su2/final-group-su2-256214.pickle'), 'rb') as f:
             MODULE_LOGGER.info("Starting to load approxes")
             begin_time = time.time()
             basic_approxes = cPickle.load(f)

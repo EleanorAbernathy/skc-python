@@ -33,6 +33,7 @@ def get_module_logger(
 # Command line option defaults.
 verbosity = 0
 
+
 # Parse command line options.
 opts, args = getopt.getopt(sys.argv[1:], 'vqho', ['verbose', 'quiet', 'help', 'output'])
 filedir=None
@@ -46,8 +47,6 @@ for option, argument in opts:
         print __doc__.strip()
         sys.exit(0)
     elif option in ('-o', '--output'):
-        import pdb
-        pdb.set_trace()
         filedir=join(abspath(dirname(__file__)), option)
     else:
         assert False, "Unhandled option!"
