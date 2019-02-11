@@ -54,14 +54,12 @@ class BasicApproxesFinder(OperatorApproxesFinder):
         #import pdb
         #pdb.set_trace()
         #try:
-        return self._basic_approxes[20],0.5
         min_dist = sys.maxint # set to max float value at first
         closest_approx = operator
         for approx in self._basic_approxes:
             current_dist = distclass.distance(approx, operator)
         
             if (current_dist < min_dist):
-                found = True
                 min_dist = current_dist
                 closest_approx = approx
         return closest_approx, min_dist
@@ -71,7 +69,8 @@ class BasicApproxesFinder(OperatorApproxesFinder):
         if self._basic_approxes:
             MODULE_LOGGER.info("Basic aproxes already loaded")
             return
-        with open(join(dirname(abspath(__file__)),'../../pickles/su2/final-group-su2-256214.pickle'), 'rb') as f:
+        with open(join(dirname(abspath(__file__)),
+            '../../pickles/su2/final-group-su2-256214.pickle'), 'rb') as f:
             MODULE_LOGGER.info("Starting to load approxes")
             begin_time = time.time()
             basic_approxes = cPickle.load(f)

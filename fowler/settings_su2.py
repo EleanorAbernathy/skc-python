@@ -15,7 +15,8 @@ S = Operator("S", S_matrix)
 Sd_matrix = matrixify([[1, 0], [0, -1.0j]])
 Sd = Operator("Sd", Sd_matrix)
 
-gset = [H, SX, SZ, S, Sd]
+#gset = [H, SX, SZ, S, Sd]
+gset = [H, T, T_inv] #as the document says
 
 ##############################################################################
 # Hermitian basis

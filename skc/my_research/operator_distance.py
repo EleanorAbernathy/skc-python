@@ -17,6 +17,8 @@ class OperatorDistance():
 
 
 class TraceDistance(OperatorDistance):
+    ''' Trace distance usually gets smaller distances than fowler.
+    It is classical matrixes norm '''
 
     @staticmethod
     def distance(op_A, op_B):

@@ -7,7 +7,7 @@ from skc.my_research import H2, X_AXIS, MODULE_LOGGER
 from skc.compose import get_random_unitary
 from skc.operator import Operator
 
-from solovay_kitaev import SolovayKitaev
+from solovay_kitaev import SolovayKitaev, SolovayKitaevEph
 
 class SolovayKitaevExecutor():
 
@@ -46,7 +46,7 @@ class SolovayKitaevExecutor():
         arg_values = kwarg[arg_name]
         for val in arg_values:
             results[str(val)] = {'times' : [], 'distances' : []}
-            MODULE_LOGGER.debug("Starting iterations for %s=%s"%(arg_name, val))
+            MODULE_LOGGER.info("Starting iterations for %s=%s"%(arg_name, val))
             key = str(val)
             for tt in range(times):
                 matrix = operators[tt]
@@ -64,15 +64,16 @@ class SolovayKitaevExecutor():
             results[key]['average_distances'] = float(sum(distances)) / times
 
         filepath = SolovayKitaevExecutor._build_file_path(sk, approxes_finder, distance, factor_method)
-        SolovayKitaevExecutor._dump_results(results, filepath)
+        SolovayKitaevExecutor._dump_results(results, filepath, ["#" + arg_name, 'times', 'average_times', 'distances', 'average_distances'])
 
         return results
 
     @staticmethod
     def _build_file_path(sk, approxes_finder, distance, factor_method):
         currdir = join(dirname(abspath(__file__)), 'out')
-        _filename = "results_%s_%s_%s_%s_%s.csv"
-        filename = _filename%(sk.name(), approxes_finder.name(), distance.name(), factor_method.name(), str(datetime.today()).replace(" ", "_"))
+        _filename = "%s-results_%s_%s_%s_%s.csv"
+        timestamp = str(datetime.today()).replace(" ", "_").replace(":",".")
+        filename = _filename%(timestamp, sk.name(), approxes_finder.name(), distance.name(), factor_method.name() )
         return join(currdir, filename)
 
     @staticmethod
@@ -83,15 +84,17 @@ class SolovayKitaevExecutor():
             )
 
     @staticmethod
-    def _dump_results( results, filepath):
+    def _dump_results( results, filepath, header=[]):
         with open(filepath, 'w') as f:
             writer = csv.writer(f, delimiter=";")
+            if header:
+                writer.writerow(header)
             for n, content in results.iteritems():
                 time=content['average_times']
                 times =content['times']
                 distance=content['average_distances']
-                distences=content['distances']
-                writer.writerow([n,times, time, distance, distance])
+                distances=content['distances']
+                writer.writerow([n,times, time, distances, distance])
 
 
 
@@ -105,5 +108,8 @@ approxes_finder = BasicApproxesFinder()
 distance = FowlerDistance
 factor_method = DawsonGroupFactor()
 sk = SolovayKitaev(approxes_finder, distance, factor_method)
+print SolovayKitaevExecutor.execute_several(sk,
+            approxes_finder, distance, factor_method, times=2, n=[0, 1, 2])
+#sk = SolovayKitaevEph(approxes_finder, distance, factor_method)
 #print SolovayKitaevExecutor.execute_several(sk,
-#            approxes_finder, distance, factor_method, n=[1, 2])
+#            approxes_finder, distance, factor_method, accurance=[0.2, 0.1])

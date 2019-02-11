@@ -22,6 +22,7 @@ class OperatorFactorMethod():
 		pass
 
 class AramDiagonalFactor(OperatorFactorMethod):
+	''' This method doesnt do it well actually...'''
 
 	def decompose(self, operator):
 		return aram_diagonal_factor(operator.matrix, self._basis, self._axis)
