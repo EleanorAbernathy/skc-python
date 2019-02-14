@@ -7,7 +7,7 @@ from skc.basis import cart3d_to_h2, get_hermitian_basis
 X_AXIS = cart3d_to_h2(x=1, y=0, z=0)
 H2 = get_hermitian_basis(d=2)
 
-PICKLES_PATH = join(dirname(abspath(__file__)), "../../pickles/su2/")
+PICKLES_PATH = join(dirname(abspath(__file__)), "../../pickles")
 
 
 def get_module_logger(

@@ -37,11 +37,13 @@ class SolovayKitaevExecutor():
 
 
     @staticmethod
-    def execute_several(sk, approxes_finder, distance, factor_method, operator_U=None, times=1, **kwarg):
+    def execute_several(sk, approxes_finder, distance, factor_method, operator_U=None, times=1, operators=[], **kwarg):
 
         results = OrderedDict({})
         assert times > 0
-        operators = [None] * times
+        if not operators:
+            operators = [None] * times
+        assert len(operators) == times
         arg_name = kwarg.keys()[0]
         arg_values = kwarg[arg_name]
         for val in arg_values:
@@ -66,7 +68,7 @@ class SolovayKitaevExecutor():
         filepath = SolovayKitaevExecutor._build_file_path(sk, approxes_finder, distance, factor_method)
         SolovayKitaevExecutor._dump_results(results, filepath, ["#" + arg_name, 'times', 'average_times', 'distances', 'average_distances'])
 
-        return results
+        return {'results' : results, 'operators' : operators}
 
     @staticmethod
     def _build_file_path(sk, approxes_finder, distance, factor_method):
@@ -79,7 +81,7 @@ class SolovayKitaevExecutor():
     @staticmethod
     def _get_random_operator():
         return Operator(
-            'matrix_U',
+            'random_matrix_U',
             get_random_unitary(H2)[0]
             )
 
@@ -98,18 +100,18 @@ class SolovayKitaevExecutor():
 
 
 
-from operator_approxes_finder import *
-from operator_distance import *
-from operator_factor_method import *
+from sk_factor.operator_approxes_finder import *
+from sk_factor.operator_distance import *
+from sk_factor.operator_factor_method import *
 
 #print SolovayKitaevExecutor.execute(BasicApproxesFinder(), FowlerDistance, DawsonGroupFactor(), 1)
 #Change to QuickFinder!!!
 approxes_finder = BasicApproxesFinder()
 distance = FowlerDistance
 factor_method = DawsonGroupFactor()
-sk = SolovayKitaev(approxes_finder, distance, factor_method)
-print SolovayKitaevExecutor.execute_several(sk,
-            approxes_finder, distance, factor_method, times=2, n=[0, 1, 2])
+#sk = SolovayKitaev(approxes_finder, distance, factor_method)
+#print SolovayKitaevExecutor.execute_several(sk,
+#           approxes_finder, distance, factor_method, times=2, n=[0, 1, 2])
 #sk = SolovayKitaevEph(approxes_finder, distance, factor_method)
 #print SolovayKitaevExecutor.execute_several(sk,
 #            approxes_finder, distance, factor_method, accurance=[0.2, 0.1])
