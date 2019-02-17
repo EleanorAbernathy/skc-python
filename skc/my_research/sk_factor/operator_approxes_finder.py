@@ -106,4 +106,4 @@ class RandomApproxesFinder(BasicApproxesFinder):
 
     def init_approxes(self):
         BasicApproxesFinder.init_approxes(self)
-        self._basic_approxes = GroupReducer.get_random_subgroup(self._group, self._percentage, self._n_items)
+        self._basic_approxes = GroupReducer.get_random_subgroup(self._basic_approxes, self._percentage, self._n_items)

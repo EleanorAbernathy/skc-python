@@ -5,7 +5,7 @@ from skc.my_research.su2_reader import SU2Reader, GroupReducer
 class SU2ReaderTest(ut.TestCase):
     #def setUp(self):
     reader = SU2Reader()
-    group = reader.read_and_create(max_len=15)
+    group = reader.read_and_create()
     reducer = GroupReducer()
 
     def test_create(self):
