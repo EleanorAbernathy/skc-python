@@ -1,6 +1,6 @@
 import random
 from os.path import join, abspath, dirname, isfile
-import os, cPickle
+import os, cPickle, glob
 
 from skc.my_research import PICKLES_PATH, MODULE_LOGGER, H2
 from skc.operator import Operator
@@ -19,7 +19,7 @@ class SU2TreeBuilder():
     def get_and_create(self, approxes ,filename="kdtree_su2.pickle"):
         if not self._kdtree:
             self._build_kdtree(approxes)
-            self._dump_tree(filename)
+            self._dump_to_file(self._kdtree, filename)
         return self._kdtree
 
     def _build_kdtree(self, approxes):
@@ -29,6 +29,35 @@ class SU2TreeBuilder():
             utils.set_operator_dimensions(o, H2)
             data.append(o)
         self._kdtree = KDTree.construct_from_data(data)
+
+    def read_and_create_all(self):
+        pattern = 'final-group-su2-*.pickle'
+        filespath = join(self._path, "../su2/")
+        pattern_to_read = join(filespath, pattern)
+        filesnames = glob.glob(pattern_to_read)
+        self.read_and_create(filesnames)
+
+    def read_and_create(self, files):
+        tree_filename="kdtree-su2-%s.pickle"
+        all_sequences = []
+        for filepath in files:
+            if not os.path.isfile(filepath):
+                MODULE_LOGGER.warning("No generation found for file %s"%filepath)
+                continue
+
+            new_sequences = self._read_from_file(filepath)
+            all_sequences.extend(new_sequences)
+            
+            MODULE_LOGGER.debug("Generation %s, read: %d"%(filepath, len(new_sequences)))
+            
+            l = str(len(all_sequences))
+            self.build_and_dump(all_sequences, tree_filename%l)
+
+        return self._kdtree
+
+    def build_and_dump(self, approxes, filename):
+        self._build_kdtree(approxes)
+        self._dump_to_file(self._kdtree, filename)
 
     def _dump_to_file(self, obj, filename):
         filedir = join(self._path, filename)
@@ -69,8 +98,9 @@ class SU2Reader(SU2TreeBuilder):
                 new_op.name = "G%d"%matrix_number
                 matrix_number += 1
                 self._group.append(new_op)
-
-            self._dump_to_file(self._group, filename_pattern%str(len(self._group)))
+            
+            l = str(len(self._group))
+            self._dump_to_file(self._group, filename_pattern%l)
         return self._group
 
 class GroupReducer(SU2TreeBuilder):

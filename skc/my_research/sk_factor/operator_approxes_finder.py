@@ -4,11 +4,12 @@ from os.path import join, dirname, abspath
 import time
 import cPickle
 import sys
+import numpy as np
 
 from skc.basic_approx import search 
-from skc.my_research import MODULE_LOGGER
+from skc.my_research import MODULE_LOGGER, H2
 from skc.my_research.su2_reader import GroupReducer
-
+from skc import utils
 
 
 class OperatorApproxesFinder():
@@ -19,8 +20,13 @@ class OperatorApproxesFinder():
         its matrix, the search method calls it'''
         pass
 
-    @abstractmethod
     def init_approxes(self):
+        self._init_approxes()
+        return self._basic_approxes
+
+
+    @abstractmethod
+    def _init_approxes(self):
         ''' Read approxes, or the tree
         '''
         pass
@@ -50,7 +56,7 @@ class BasicApproxesFinder(OperatorApproxesFinder):
         return closest_approx, min_dist
 
 
-    def init_approxes(self):
+    def _init_approxes(self):
         if self._basic_approxes:
             MODULE_LOGGER.info("Basic aproxes already loaded")
             return
@@ -71,17 +77,20 @@ class BasicApproxesFinder(OperatorApproxesFinder):
 
 
 
+
 class KDTreeApproxesFinder(BasicApproxesFinder):
 
     def __init__(self, filedir="pickles/kdtree", filename="kdtree_su2.pickle" ,**kwargs):
         BasicApproxesFinder.__init__(self, filedir, filename, **kwargs)
         self._tree = None
         
-    def init_approxes(self):
+    def _init_approxes(self):
         if self._tree:
-            MODULE_LOGGER.info("Tree already created")
+            MODULE_LOGGER.info("Tree already loaded")
             return
-        with open(join(self._filedir, self._filename), "r") as f:
+        path = join(dirname(abspath(__file__)), "../../..")
+        allpath = join(join(path, self._filedir), self._filename)
+        with open(allpath, "r") as f:
             MODULE_LOGGER.info("Starting to load tree")
             begin_time = time.time()
             self._tree = cPickle.load(f)
@@ -90,20 +99,31 @@ class KDTreeApproxesFinder(BasicApproxesFinder):
         
 
     def find_basic_approx(self,operator, distclass):
+        if all((operator.matrix == np.eye(2)).flat):
+            return operator, 0
+        try:
+            utils.set_operator_dimensions(operator, H2)
+        except ValueError:
+            MODULE_LOGGER.warning("Couldnt set operator dimensions for kd tree search")
+            return operator, 0
         best = self._tree.query(operator, 1)[0]
         return best, distclass.distance(best, operator)
 
 
     def name(self):
-        return "kd_tree_finder"
+        return "kd_tree_finder-" + str(self._filename.split(".pickle")[0])
 
 class RandomApproxesFinder(BasicApproxesFinder):
 
     def __init__(self, filedir="pickles/su2/", filename="final-group-su2-256214.pickle" , percentage=None,n_items=None, **kwargs):
         BasicApproxesFinder.__init__(self, filedir, filename, **kwargs)
+        assert percentage or n_items
         self._percentage = percentage
         self._n_items = n_items
 
-    def init_approxes(self):
-        BasicApproxesFinder.init_approxes(self)
+    def _init_approxes(self):
+        BasicApproxesFinder._init_approxes(self)
         self._basic_approxes = GroupReducer.get_random_subgroup(self._basic_approxes, self._percentage, self._n_items)
+
+    def name(self):
+        return "random_group_finder"
