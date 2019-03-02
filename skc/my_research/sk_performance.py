@@ -91,6 +91,6 @@ if __name__ == '__main__':
     #n_tree_vs_basic(filename_pattern%N_ITEMS['16'], filename_tree_pattern%N_ITEMS['16'])
 
 
-    for N in [N_ITEMS[i] for i in ['13', '12']]:
+    for N in [N_ITEMS[i] for i in ['12', '13', '14', '15']]:
         MODULE_LOGGER.info("random vs shorter with tree finder for density %d"%N)
         density_random_vs_shorter(filename_tree_pattern%N, random_tree_filename%N, N)
