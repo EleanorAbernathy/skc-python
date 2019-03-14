@@ -26,7 +26,7 @@ N_ITEMS = OrderedDict({
 distance = FowlerDistance
 factor_method = DawsonGroupFactor()
 
-def density_random_and_shorter_and_kdtree(group_filename, tree_filename, n_items, times=2, n=[1,2,3]):
+def density_random_and_shorter_and_kdtree(group_filename, tree_filename, n_items, times=2, n=[1,2,3,4,5]):
     ''' Randomly, shorterly and by kdtree for given density '''
 
     bassic_finder = BasicApproxesFinder(filename=group_filename)
@@ -60,12 +60,12 @@ def n_tree_vs_basic(group_filename, tree_filename, times=3, n=[1,2,3,4,5]):
     SolovayKitaevExecutor.execute_several(sk,
         bassic_finder, distance, factor_method, operators=matrixes[:-1], times=times-1, n=n[:-1], filepath='out/tree_vs_basic')
 
-def density_random_vs_shorter(tree_group_filename, tree_random_filename, n_items, times=5, n=range(1,8)):
+def density_random_vs_shorter(tree_group_filename, tree_random_filename, n_items, times=6, n=range(1,8)):
     ''' For given density, tolerance as density increases, with one or several depth.
     Will be used kdtree finder because is faster '''
 
     bassic_finder = KDTreeApproxesFinder(filename=tree_group_filename)
-    random_finder = KDTreeApproxesFinder(filename=tree_random_filename)
+    #random_finder = KDTreeApproxesFinder(filename=tree_random_filename)
     
     
     sk = SolovayKitaev(bassic_finder, distance, factor_method)
@@ -73,9 +73,9 @@ def density_random_vs_shorter(tree_group_filename, tree_random_filename, n_items
         bassic_finder, distance, factor_method, times=times, n=n, filepath='out/random_vs_shorter')
     matrixes = results_1['operators']
     
-    sk = SolovayKitaev(random_finder, distance, factor_method)
-    SolovayKitaevExecutor.execute_several(sk,
-        random_finder, distance, factor_method, operators=matrixes, times=times, n=n, filepath='out/random_vs_shorter')
+    #sk = SolovayKitaev(random_finder, distance, factor_method)
+    #SolovayKitaevExecutor.execute_several(sk,
+    #    random_finder, distance, factor_method, operators=matrixes, times=times, n=n, filepath='#out/random_vs_shorter_delme')
     
 
 if __name__ == '__main__':
@@ -83,14 +83,17 @@ if __name__ == '__main__':
     filename_tree_pattern = 'kdtree-su2-%d.pickle'
     random_tree_filename = 'random-kdtree-su2-%d.pickle'
 
-    #for pot, N in N_ITEMS.iteritems():
-    #    MODULE_LOGGER.info("density %d, random and shorter and kdtree..."%N)
-    #    density_random_and_shorter_and_kdtree(filename_pattern%N, filename_tree_pattern%N, N)
+    for ii in ['2','6','9','12','14','16']: 
+        N = N_ITEMS[ii]
+        MODULE_LOGGER.info("density %d, random and shorter and kdtree..."%N)
+        density_random_and_shorter_and_kdtree(filename_pattern%N, filename_tree_pattern%N, N)
 
     #MODULE_LOGGER.info("tree vs basic with density %d"%N_ITEMS['16'])
     #n_tree_vs_basic(filename_pattern%N_ITEMS['16'], filename_tree_pattern%N_ITEMS['16'])
 
 
-    for N in [N_ITEMS[i] for i in ['12', '13', '14', '15']]:
-        MODULE_LOGGER.info("random vs shorter with tree finder for density %d"%N)
-        density_random_vs_shorter(filename_tree_pattern%N, random_tree_filename%N, N)
+    #for N in [N_ITEMS[i] for i in ['11', '12', '13', '14', '15']]:
+    #for N in [N_ITEMS[i] for i in ['12', '14']]:
+    #    MODULE_LOGGER.info("random vs shorter with tree finder for density %d"%N)
+    #    density_random_vs_shorter(filename_tree_pattern%N, random_tree_filename%N, N)
+    #    #density_random_vs_shorter(filename_tree_pattern%N, random_tree_filename%N, N, times=2, n=[2,3])

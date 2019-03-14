@@ -46,6 +46,9 @@ class SolovayKitaevExecutor():
         assert len(operators) == times
         arg_name = kwarg.keys()[0]
         arg_values = kwarg[arg_name]
+        
+        final_filepath = SolovayKitaevExecutor._build_file_path(sk, approxes_finder, distance, factor_method, filepath)
+        SolovayKitaevExecutor._dump_results({}, final_filepath, ["#" + arg_name, 'times', 'average_times', 'distances', 'average_distances'])
         for val in arg_values:
             results[str(val)] = {'times' : [], 'distances' : []}
             MODULE_LOGGER.info("Starting iterations for %s=%s"%(arg_name, val))
@@ -58,15 +61,13 @@ class SolovayKitaevExecutor():
                 results[key]['times'].append(_format_number(returned['final_time']))
                 results[key]['distances'].append(_format_number(returned['accurance']))
 
-
-        for key in results:
+        #for key in results:
             times_list = results[key]['times']
             distances = results[key]['distances']
             results[key]['average_times'] = _format_number( float(sum(times_list)) / times)
             results[key]['average_distances'] = _format_number( float(sum(distances)) / times)
 
-        filepath = SolovayKitaevExecutor._build_file_path(sk, approxes_finder, distance, factor_method, filepath)
-        SolovayKitaevExecutor._dump_results(results, filepath, ["#" + arg_name, 'times', 'average_times', 'distances', 'average_distances'])
+            SolovayKitaevExecutor._dump_results({key : results[key]}, final_filepath, mode='a')
 
         return {'results' : results, 'operators' : operators}
 
@@ -86,10 +87,10 @@ class SolovayKitaevExecutor():
             )
 
     @staticmethod
-    def _dump_results( results, filepath, header=[]):
+    def _dump_results( results, filepath, header=[], mode='w'):
         if not os.path.isdir(dirname(filepath)):
             os.mkdir(dirname(filepath))
-        with open(filepath, 'w') as f:
+        with open(filepath, mode) as f:
             writer = csv.writer(f, delimiter=";")
             if header:
                 writer.writerow(header)

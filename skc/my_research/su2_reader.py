@@ -127,7 +127,7 @@ class GroupReducer(SU2TreeBuilder):
         #33% => split into len/3 groups ==> 3 nn?
         nn = int(len(group) / n_items) if not percentage else int(1/percentage)
         for ii, op in enumerate(group):
-
+            utils.set_operator_dimensions(op, H2)
             nneighs = self._kdtree.query(op, nn)
             if any([neig in final_group for neig in nneighs]):
                 continue
