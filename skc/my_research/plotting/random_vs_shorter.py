@@ -25,7 +25,7 @@ def _random_vs_shorter_stuff(directory, output_name, yaxis_title, key_results, l
     shorter_files = search_files(directory, "*finder-kdtree*.csv")
     results = several_random_shorter_parse(random_files, shorter_files)
     x_values = results['x']
-    axis_x, axis_y1, _ = _create_axis_group(
+    axis_x, axis_y1, _ = create_axis_group(
         "Group density (#items)", 
         yaxis_title, y1_args={'type': 'log'})
 
@@ -61,7 +61,7 @@ def _random_vs_shorter_stuff(directory, output_name, yaxis_title, key_results, l
                             )
     traces = traces_random + traces_shorter
 
-    _finish(directory, output_name, traces, layout)
+    finish(directory, output_name, traces, layout)
 
 
 

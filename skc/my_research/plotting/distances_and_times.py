@@ -11,7 +11,7 @@ def generate_distances_and_times(filesnames, output_name=None):
     x_values, times, distances = parse_several(filesnames)
     traces_times = []
     traces_distances = []
-    axis_x, axis_y1, axis_y2 = _create_axis_group(
+    axis_x, axis_y1, axis_y2 = create_axis_group(
         "Group density (#items)", y1_color=BLUES[2],
         y1_title = "Error for each density (%1)", y2_color=GREENS[2],
         y2_title="Time for each density (s)" , y1_args={'type': 'log'}, 

@@ -1,6 +1,6 @@
 from os.path import join, abspath, dirname
 from datetime import datetime
-import time, csv, os
+import time, csv, os, sys
 from collections import OrderedDict
 
 from skc.my_research import H2, X_AXIS, MODULE_LOGGER
@@ -37,7 +37,7 @@ class SolovayKitaevExecutor():
 
 
     @staticmethod
-    def execute_several(sk, approxes_finder, distance, factor_method, operator_U=None, times=1, operators=[], filepath='out', **kwarg):
+    def execute_several(sk, approxes_finder, distance, factor_method, times=1, operators=[], filepath='out', **kwarg):
         _format_number = SolovayKitaevExecutor._format_number
         results = OrderedDict({})
         assert times > 0
@@ -109,15 +109,20 @@ class SolovayKitaevExecutor():
 from sk_factor.operator_approxes_finder import *
 from sk_factor.operator_distance import *
 from sk_factor.operator_factor_method import *
+'''
+group_filename = sys.argv[1]
+times=2
+n=[1,2,3,4,5]
 
-#print SolovayKitaevExecutor.execute(BasicApproxesFinder(), FowlerDistance, DawsonGroupFactor(), 1)
-#Change to QuickFinder!!!
-#approxes_finder = BasicApproxesFinder()
-#distance = FowlerDistance
-#factor_method = DawsonGroupFactor()
-#sk = SolovayKitaev(approxes_finder, distance, factor_method)
-#print SolovayKitaevExecutor.execute_several(sk,
-#           approxes_finder, distance, factor_method, times=2, n=[0, 1, 2])
-#sk = SolovayKitaevEph(approxes_finder, distance, factor_method)
-#print SolovayKitaevExecutor.execute_several(sk,
-#            approxes_finder, distance, factor_method, accurance=[0.2, 0.1])
+#Efficiency of using kdtree as n increases vs basic aproxes, for fixed density
+
+bassic_finder = BasicApproxesFinder(filename=group_filename)
+
+distance = FowlerDistance
+factor_method = DawsonGroupFactor()
+
+sk = SolovayKitaev(bassic_finder, distance, factor_method)
+SolovayKitaevExecutor.execute_several(sk, bassic_finder, distance,
+    factor_method, times=times,
+    n=n, filepath='out/tree_vs_basic')
+'''

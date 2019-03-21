@@ -15,7 +15,7 @@ def generate_tree_vs_bassic(tree_file, bassic_file, output_name=None):
     distances_tree = results_tree['y2']
     distances_bassic = results_bassic['y2']
 
-    axis_x, axis_y1, axis_y2 = _create_axis_group(
+    axis_x, axis_y1, axis_y2 = create_axis_group(
         "Algorithm's depth (n)", 
         "Tolerance (%1)", BLUES[0], 
         "Time (s)", GREENS[0]  )
@@ -41,7 +41,7 @@ def generate_tree_vs_bassic(tree_file, bassic_file, output_name=None):
         y=distances_tree,
         mode='markers+lines',
         name='tree tolerance',
-        color=BLUES[2],
+        color=BLUES[5],
         symbol='square'
     )
 
@@ -50,7 +50,7 @@ def generate_tree_vs_bassic(tree_file, bassic_file, output_name=None):
         y=times_tree,
         mode='markers+lines',
         name='tree time',
-        color=GREENS[2],
+        color=GREENS[5],
         yaxis='y2',
         symbol='square'
     )
@@ -58,7 +58,7 @@ def generate_tree_vs_bassic(tree_file, bassic_file, output_name=None):
                 yaxis=axis_y1, yaxis2=axis_y2, legend={'x': 1.1,'xanchor': 'left', 'y': 1 })
     traces = [trace_accurance_bassic, trace_time_bassic, trace_accurance_tree, trace_time_tree]
 
-    _finish(tree_file, output_name, traces, layout)
+    finish(tree_file, output_name, traces, layout)
 
 if __name__ == '__main__':
 
