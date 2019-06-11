@@ -5,7 +5,8 @@ from collections import OrderedDict
 
 
 def random_vs_shorter_parse(random_file, shorter_file):
-    n_items = random_file.split("su2-")[-1].split("_")[0]
+
+    n_items = random_file.split("-su2-")[-1].split("_")[0]
     n_items = int(n_items)
 
     random_data = parse_file(random_file) #x = [n], y1 = [times], y2 = [distances]
@@ -13,11 +14,12 @@ def random_vs_shorter_parse(random_file, shorter_file):
 
     return n_items, random_data, shorter_data
 
-def parse_several(filesnames):
+def parse_several(filesnames, sort=True):
     n_items = []
     times = OrderedDict({})
     distances = OrderedDict({})
-    _sort_files(filesnames)
+    if sort:
+        _sort_files(filesnames)
 
     for ii, filename in enumerate(filesnames):
         density = filename.split("su2-")[-1].split("_")[0]
@@ -36,8 +38,8 @@ def parse_several(filesnames):
 
 def parse_several_error_time(all_filesnames):
     tree_files = filter(lambda name: "kd_tree_finder" in name, all_filesnames)
-    random_files = filter(lambda name: "random_group" in name, all_filesnames)
-    bassic_files = filter(lambda name: "bassic_finder" in name, all_filesnames)
+    random_files = filter(lambda name: "random_group_finder-su2" in name, all_filesnames)
+    bassic_files = filter(lambda name: "bassic_finder-su2" in name, all_filesnames)
 
     results = {'tree' : parse_several(tree_files),
     'bassic' : parse_several(bassic_files),
@@ -52,7 +54,7 @@ def _init_dicts(n_depth, *dicts):
             d[str(nn)] = []
 
 def _sort_files(files):
-    key=lambda name:  int(name.split("su2-")[-1].split("_")[0])
+    key=lambda name:  int(name.split("-su2-")[-1].split("_")[0])
     files.sort(key=key)
 
 def several_random_shorter_parse(random_files, shorter_files):

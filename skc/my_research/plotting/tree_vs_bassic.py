@@ -4,6 +4,7 @@ from plotting_utils.results_parser import *
 from plotting_utils.figures_module import create_scatter, create_layout
 from plotting_utils.color_scales import *
 from plotting_utils.utils import *
+import plotly.graph_objs as go
 
 def generate_tree_vs_bassic(tree_file, bassic_file, output_name=None):
     results_tree = parse_file(tree_file)
@@ -54,7 +55,11 @@ def generate_tree_vs_bassic(tree_file, bassic_file, output_name=None):
         yaxis='y2',
         symbol='square'
     )
-    layout = create_layout("Results kd-tree finder vs bassic (largest group)", xaxis=axis_x, 
+    layout = create_layout(title=go.layout.Title(
+        text="Results kd-tree finder vs bassic (largest group)",
+        xref='paper',
+        y=0
+    ), xaxis=axis_x, 
                 yaxis=axis_y1, yaxis2=axis_y2, legend={'x': 1.1,'xanchor': 'left', 'y': 1 })
     traces = [trace_accurance_bassic, trace_time_bassic, trace_accurance_tree, trace_time_tree]
 
@@ -65,4 +70,4 @@ if __name__ == '__main__':
     tree_file = sys.argv[1]
     bassic_file = sys.argv[2]
 
-    generate_tree_vs_bassic(tree_file, bassic_file)
+    generate_tree_vs_bassic(tree_file, bassic_file, output_name='newtreevsbassic.png')

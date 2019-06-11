@@ -32,7 +32,7 @@ def create_axis(title, size=18, color='#7f7f7f', side='left', **kwargs):
 
 def create_pow_function(x, a, base, b=1):
     assert b > 0
-    f = a * np.exp(b*x*np.log(b))
+    f = a * np.exp(b*x*np.log(base))
     return f
 
 def create_layout(title, xaxis, **y_axis):

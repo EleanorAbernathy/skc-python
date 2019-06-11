@@ -3,7 +3,7 @@ from skc.basis import get_hermitian_basis
 from skc.my_research import H2, MODULE_LOGGER
 
 #https://arxiv.org/pdf/quant-ph/0505030.pdf
-EPH_0 = 0.14
+EPH_0 = 0.014
 C_approx = 4 * math.sqrt(2)
 
 class SolovayKitaev():

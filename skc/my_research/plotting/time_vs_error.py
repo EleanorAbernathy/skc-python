@@ -5,9 +5,9 @@ from plotting_utils.results_parser import *
 from plotting_utils.figures_module import create_scatter, create_layout, create_axis, dump_image
 from plotting_utils.color_scales import *
 from plotting_utils.utils import *
-from plotting import build_complete_path
+from __init__ import build_complete_path
 
-def generate_time_vs_error(directory, output_name=None,):
+def generate_time_vs_error(directory, output_name=None):
     def _complete_stuff(results, traces, sk_type, color_scale, symbol, text=False, pos=None):
         densities, times, distances = results
         studing_densities = densities if pos == None else densities[pos:pos+1]

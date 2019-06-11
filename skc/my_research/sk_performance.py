@@ -60,6 +60,13 @@ def n_tree_vs_basic(group_filename, tree_filename, times=3, n=[1,2,3,4,5]):
     SolovayKitaevExecutor.execute_several(sk,
         bassic_finder, distance, factor_method, operators=matrixes[:-1], times=times-1, n=n[:-1], filepath='out/tree_vs_basic')
 
+def just_bassic(group_filename = '',tree_filename='', times=1, n=[1,2,3,4,5,6]):
+    #finder = BasicApproxesFinder(filename=group_filename)
+    finder = KDTreeApproxesFinder(filename=tree_filename)
+    sk = SolovayKitaev(finder, distance, factor_method)
+    SolovayKitaevExecutor.execute_several(sk,
+        finder, distance, factor_method, times=times, n=n, filepath='out/bassic_examples')
+
 def density_random_vs_shorter(tree_group_filename, tree_random_filename, n_items, times=6, n=range(1,8)):
     ''' For given density, tolerance as density increases, with one or several depth.
     Will be used kdtree finder because is faster '''
@@ -79,14 +86,17 @@ def density_random_vs_shorter(tree_group_filename, tree_random_filename, n_items
     
 
 if __name__ == '__main__':
-    filename_pattern = 'final-group-su2-%d.pickle'
-    filename_tree_pattern = 'kdtree-su2-%d.pickle'
+    filename_pattern = 'final-group-su2-%d.pickle' %(256214)
+    filename_tree_pattern = 'kdtree-su2-%d.pickle'%(256214)
     random_tree_filename = 'random-kdtree-su2-%d.pickle'
+    #just_bassic(filename_pattern, n=range(1,3))
+    just_bassic("", filename_tree_pattern)
+    just_bassic("", filename_tree_pattern)
 
-    for ii in ['2','6','9','12','14','16']: 
-        N = N_ITEMS[ii]
-        MODULE_LOGGER.info("density %d, random and shorter and kdtree..."%N)
-        density_random_and_shorter_and_kdtree(filename_pattern%N, filename_tree_pattern%N, N)
+    #for ii in ['2','6','9','12','14','16']: 
+    #    N = N_ITEMS[ii]
+    #    MODULE_LOGGER.info("density %d, random and shorter and kdtree..."%N)
+    #    density_random_and_shorter_and_kdtree(filename_pattern%N, filename_tree_pattern%N, N)
 
     #MODULE_LOGGER.info("tree vs basic with density %d"%N_ITEMS['16'])
     #n_tree_vs_basic(filename_pattern%N_ITEMS['16'], filename_tree_pattern%N_ITEMS['16'])
